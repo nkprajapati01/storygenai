@@ -5,18 +5,12 @@ from transformers import pipeline
 @st.cache_resource
 def load_story_generator():
     """
-    Load the Hugging Face text generation pipeline with a pre-trained model.
-    Device is set to CPU explicitly for compatibility.
+    Load a fine-tuned Hugging Face text generation pipeline for storytelling.
     """
-    try:
-        # Load the GPT-2 text generation pipeline
-        return pipeline("text-generation", model="gpt2", device=-1)  # Use CPU
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
+    return pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B", device=-1)  # Use CPU
 
 # Streamlit app
-st.title("📖 Story Generator: Bring Your Imagination to Life")
+st.title("📖 Story Generator: Bring Your Imagination to Life!")
 st.write("#### Create captivating short stories in seconds! ✍️✨")
 st.markdown(
     """
@@ -28,7 +22,10 @@ st.markdown(
 
 # Input: Character and Setting
 st.subheader("📝 Enter Your Story Prompt")
-character_and_setting = st.text_input("Describe a character and a setting:", placeholder="E.g., A robot named Max in a desert")
+character_and_setting = st.text_input(
+    "Describe a character and a setting:",
+    placeholder="E.g., Write a short story about a knight who protects a magical forest."
+)
 
 # Generate button
 if st.button("✨ Generate Story"):
@@ -37,8 +34,14 @@ if st.button("✨ Generate Story"):
         story_generator = load_story_generator()
         if story_generator:
             try:
-                # Generate a short story
-                story = story_generator(character_and_setting, max_length=100, num_return_sequences=1)
+                # Generate a short story with constraints
+                story = story_generator(
+                    character_and_setting,
+                    max_length=150,          # Limit story length
+                    num_return_sequences=1,  # Return only one story
+                    temperature=0.8,         # Balance creativity and coherence
+                    top_p=0.9                # Diverse sampling
+                )
                 generated_story = story[0]["generated_text"]
                 st.success("✅ Story generated! Here's your masterpiece:")
                 st.text_area("📖 Your Story", value=generated_story, height=200)
