@@ -54,4 +54,4 @@ if st.button("✨ Generate Story"):
         st.warning("⚠️ Please enter a character and a setting to generate a story.")
 
 st.markdown("---")
-st.write("🌟 **Powered by [Hugging Face Transformers](https://huggingface.co/transformers) and Streamlit** 🌟")
+st.write("🌟 **Made by Vivek Chouhan** 🌟")
