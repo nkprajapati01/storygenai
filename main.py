@@ -1,3 +1,9 @@
+import asyncio
+try:
+    asyncio.get_running_loop()
+except RuntimeError:  # No running event loop
+    asyncio.run(asyncio.sleep(0))  # Initialize a new event loop
+
 import streamlit as st
 from transformers import pipeline
 
