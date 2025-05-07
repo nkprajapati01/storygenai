@@ -5,19 +5,19 @@ from transformers import pipeline
 @st.cache_resource
 def load_story_generator():
     """
-    Load the Hugging Face text generation pipeline.
+    Load the Hugging Face text generation pipeline with a pre-trained model.
     Device is set to CPU explicitly for compatibility.
     """
     return pipeline("text-generation", model="gpt2", device=-1)  # Use CPU
 
 # Streamlit app
-st.title("📖 Story Generator: Unleash Your Creativity 🌟")
+st.title("📖 Story Generator: Bring Your Imagination to Life! 🌟")
 st.write("#### Create captivating short stories in seconds! ✍️✨")
 st.markdown(
     """
     Welcome to **Story Generator**, your AI-powered storytelling assistant!  
     Provide a character and a setting, and watch as the magic unfolds. 🌠  
-    Let's turn your imagination into stories! 🚀
+    Unleash your creativity and let AI bring your imagination to life! 🚀
     """
 )
 
