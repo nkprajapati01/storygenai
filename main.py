@@ -38,9 +38,11 @@ if st.button("✨ Generate Story"):
                 story = story_generator(
                     character_and_setting,
                     max_length=150,          # Limit story length
+                    truncation=True,         # Explicitly enable truncation
                     num_return_sequences=1,  # Return only one story
                     temperature=0.8,         # Balance creativity and coherence
-                    top_p=0.9                # Diverse sampling
+                    top_p=0.9,               # Diverse sampling
+                    pad_token_id=50256       # Explicitly set pad_token_id to eos_token_id
                 )
                 generated_story = story[0]["generated_text"]
                 st.success("✅ Story generated! Here's your masterpiece:")
