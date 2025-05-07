@@ -1,5 +1,5 @@
-streamlit==1.22.0
-transformers==4.29.2
+streamlit
+transformers
 torch  # Removed specific version to allow pip to find a compatible one
 sentencepiece
 sacremoses
