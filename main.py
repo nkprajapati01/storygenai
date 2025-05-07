@@ -1,21 +1,21 @@
-import asyncio
-try:
-    asyncio.get_running_loop()
-except RuntimeError:  # No running event loop
-    asyncio.run(asyncio.sleep(0))  # Initialize a new event loop
+import os
+os.environ["STREAMLIT_WATCH_INSTALLER"] = "false"  # Prevent Streamlit watcher conflict with torch
 
 import streamlit as st
 from transformers import pipeline
+import torch
 
-# Define function to load the text generation pipeline
+torch.set_grad_enabled(False)  # Disable autograd for inference (safer, faster)
+
+# Load text generation pipeline with caching
 @st.cache_resource
 def load_story_generator():
     """
     Load a fine-tuned Hugging Face text generation pipeline for storytelling.
     """
-    return pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B", device=-1)  # Use CPU
+    return pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B", device=-1)  # CPU usage
 
-# Streamlit app
+# Streamlit app UI
 st.title("📖 Story Generator: Bring Your Imagination to Life!")
 st.write("#### Create captivating short stories in seconds! ✍️✨")
 st.markdown(
@@ -26,7 +26,7 @@ st.markdown(
     """
 )
 
-# Input: Character and Setting
+# User input
 st.subheader("📝 Enter Your Story Prompt")
 character_and_setting = st.text_input(
     "Describe a character and a setting:",
@@ -36,27 +36,22 @@ character_and_setting = st.text_input(
 # Generate button
 if st.button("✨ Generate Story"):
     if character_and_setting.strip():
-        # Load the story generator pipeline
         story_generator = load_story_generator()
-        if story_generator:
-            try:
-                # Generate a short story with constraints
-                story = story_generator(
-                    character_and_setting,
-                    max_length=150,          # Limit story length
-                    truncation=True,         # Explicitly enable truncation
-                    num_return_sequences=1,  # Return only one story
-                    temperature=0.8,         # Balance creativity and coherence
-                    top_p=0.9,               # Diverse sampling
-                    pad_token_id=50256       # Explicitly set pad_token_id to eos_token_id
-                )
-                generated_story = story[0]["generated_text"]
-                st.success("✅ Story generated! Here's your masterpiece:")
-                st.text_area("📖 Your Story", value=generated_story, height=200)
-            except Exception as e:
-                st.error(f"⚠️ An error occurred while generating the story: {e}")
-        else:
-            st.error("⚠️ Unable to load the story generator. Please try again later.")
+        try:
+            story = story_generator(
+                character_and_setting,
+                max_length=150,
+                truncation=True,
+                num_return_sequences=1,
+                temperature=0.8,
+                top_p=0.9,
+                pad_token_id=50256
+            )
+            generated_story = story[0]["generated_text"]
+            st.success("✅ Story generated! Here's your masterpiece:")
+            st.text_area("📖 Your Story", value=generated_story, height=200)
+        except Exception as e:
+            st.error(f"⚠️ An error occurred while generating the story: {e}")
     else:
         st.warning("⚠️ Please enter a character and a setting to generate a story.")
 
