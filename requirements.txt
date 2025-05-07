@@ -1,5 +1,3 @@
 streamlit
-transformers >=4.29.0
-torch  # Removed specific version to allow pip to find a compatible one
-sentencepiece
-sacremoses
+transformers
+torch
