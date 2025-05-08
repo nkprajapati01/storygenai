@@ -1,4 +1,4 @@
-📖 #Story Generator: Bring Your Imagination to Life!
+📖 #Story Generator: Bring Your Imagination to Life!#
 An AI-powered storytelling app that turns your character and setting into a short story using GPT-2.
 
 ✨ **Features**
