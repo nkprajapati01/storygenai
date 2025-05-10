@@ -34,8 +34,6 @@ Then open your browser to http://localhost:8501
 📜 **Example Output**
 Once upon a time, in a futuristic city, there was a small robot named Arti who lived alone in a cozy apartment. Every evening, he would sit by the window and listen to humans play violins in the concert hall across the street... 🎻✨
 
-👨‍🎨 **Author**
-**Vivek Chouhan**
 
 *Made with ❤️ to inspire creativity through code.
 
